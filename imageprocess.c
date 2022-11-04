@@ -797,41 +797,47 @@ float ThresholdGet(uint8 (*Img)[IMGW])
 
 uint8 getThreshold(uint8 (*Img)[IMGW])
 {
-    int32 hist[256];
-    memset(hist, 0, sizeof(hist));
+    //第一步：逐像素统计256种灰度的出现次数，同时累加灰度值
+    int32 histogram[256]; //灰度直方图
+    memset(histogram, 0, sizeof(histogram));
 
-    float total_sum = 0;
-    int32 total_count = 0;
+    double allPixelIntegral = 0;
+    int32 totalPixel = 0;
     for (int i = 0; i < IMGH; i++)
     {
         for (int j = 0; j < IMGW; j++)
         {
             uint8 gray = Img[i][j];
-            hist[gray]++;
-            total_count++;
-            total_sum += gray;
+            histogram[gray]++;
+            totalPixel++;
+            allPixelIntegral += gray;
         }
     }
 
-    double sum1 = 0, sum2 = 0;
-    int32 count1 = 0, count2 = 0;
+    //第二步：灰度图中取分界点，划分为背景和前景两类，计算类间方差，方差最大的分界点即二值化最优阈值
+    double bgPixelIntegral = 0, fgPixelIntegral = 0;
+    int32 bgPixel = 0, fgPixel = 0;
 
-    double maxDiff = -1;
+    double maxSigma = -1;
     uint8 threshold = 160;
     for (int gray = 0; gray < 256; gray++)
     {
-        count1 += hist[gray];
-        sum1 += (double)gray * (double)hist[gray];
-        count2 = total_count - count1;
-        sum2 = total_sum - sum1;
-
-        double avg1 = sum1 / count1;
-        double avg2 = sum2 / count2;
-        double diff = (double)count1 * (double)count2 * (avg1 - avg2) * (avg1 - avg2);
-        if (diff > maxDiff)
+        if (histogram[gray] > 0)
         {
-            maxDiff = diff;
-            threshold = gray;
+            bgPixel += histogram[gray];
+            bgPixelIntegral += (double)gray * (double)histogram[gray];
+            fgPixel = totalPixel - bgPixel;
+            fgPixelIntegral = allPixelIntegral - bgPixelIntegral;
+
+            double bgAvg = bgPixelIntegral / bgPixel;
+            double fgAvg = fgPixelIntegral / fgPixel;
+
+            double sigma = (bgAvg - fgAvg) * (bgAvg - fgAvg) * bgPixel * fgPixel; //计算前景/背景的类间方差
+            if (sigma > maxSigma)
+            {
+                maxSigma = sigma;
+                threshold = gray;
+            }
         }
     }
     return threshold;
