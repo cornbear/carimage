@@ -27,10 +27,10 @@ void saveBitmap(char *fileName, uint8 image[], int width, int height, uint8 byte
 
     for (int i = 0; i < 256; i++)
     {
-        bmpColorPalette[4*i] = i;
-        bmpColorPalette[4*i+1] = i;
-        bmpColorPalette[4*i+2] = i;
-        bmpColorPalette[4*i+3] = i;
+        bmpColorPalette[4 * i] = i;
+        bmpColorPalette[4 * i + 1] = i;
+        bmpColorPalette[4 * i + 2] = i;
+        bmpColorPalette[4 * i + 3] = i;
     }
 
     FILE *f = fopen(fileName, "wb");

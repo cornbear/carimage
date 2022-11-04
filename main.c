@@ -35,10 +35,10 @@ int main()
     g_TrackType.m_u8ThreeRoadsDir = 1;
     g_TrackType.m_u8RunTurns = 0;
 
-    g_Border.Threshold = 128; //ThresholdGet(mt9v03x_image); //获取图像阈值
+    g_Border.Threshold = getThreshold(mt9v03x_image); //获取图像阈值
     printf("Threshold:%f\n", g_Border.Threshold);
 
-    GetBinaryImage(mt9v03x_image, image_new, g_Border.Threshold); //二值化图像
+    getBinaryImage(mt9v03x_image, image_new, g_Border.Threshold); //二值化图像
 
     saveBitmap("gray.bmp", (uint8*)image_new, IMGW, IMGH, 1);
 

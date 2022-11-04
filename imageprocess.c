@@ -229,7 +229,7 @@ uint8 GetThreshold(uint8 (*Img)[IMGW])
     return t_u8Threshold; //返回最佳阈值;
 }
 
-void GetBinaryImage(uint8 (*InImg)[IMGW], uint8 (*OutImg)[IMGW], float Threshold)
+void getBinaryImage(uint8 (*InImg)[IMGW], uint8 (*OutImg)[IMGW], float Threshold)
 {
     int16 t_i16i, t_i16j;
     float TempTh = Threshold;
@@ -793,4 +793,46 @@ float ThresholdGet(uint8 (*Img)[IMGW])
         BlackThres = T2;
     } while (flag);
     return BlackThres;
+}
+
+uint8 getThreshold(uint8 (*Img)[IMGW])
+{
+    int32 hist[256];
+    memset(hist, 0, sizeof(hist));
+
+    float total_sum = 0;
+    int32 total_count = 0;
+    for (int i = 0; i < IMGH; i++)
+    {
+        for (int j = 0; j < IMGW; j++)
+        {
+            uint8 gray = Img[i][j];
+            hist[gray]++;
+            total_count++;
+            total_sum += gray;
+        }
+    }
+
+    double sum1 = 0, sum2 = 0;
+    int32 count1 = 0, count2 = 0;
+
+    double maxDiff = -1;
+    uint8 threshold = 160;
+    for (int gray = 0; gray < 256; gray++)
+    {
+        count1 += hist[gray];
+        sum1 += (double)gray * (double)hist[gray];
+        count2 = total_count - count1;
+        sum2 = total_sum - sum1;
+
+        double avg1 = sum1 / count1;
+        double avg2 = sum2 / count2;
+        double diff = (double)count1 * (double)count2 * (avg1 - avg2) * (avg1 - avg2);
+        if (diff > maxDiff)
+        {
+            maxDiff = diff;
+            threshold = gray;
+        }
+    }
+    return threshold;
 }
