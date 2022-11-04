@@ -43,8 +43,10 @@ float Fabs(float x)
         return x;
 }
 
-int  myabs(int dat)
+int myabs(int dat)
 {
-    if(dat>=0)  return dat;
-    else        return -dat;
+    if (dat >= 0)
+        return dat;
+    else
+        return -dat;
 }

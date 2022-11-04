@@ -9,7 +9,6 @@
 #define CODE_PERSPECTIVE_H_
 
 extern float X_perspective[100][188];
-//extern float Y_perspective[100][188];
-
+// extern float Y_perspective[100][188];
 
 #endif /* CODE_PERSPECTIVE_H_ */

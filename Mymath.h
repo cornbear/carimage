@@ -14,6 +14,6 @@ extern float FExp(float x);
 extern float FSqrt(float x);
 extern float Fabs(float x);
 
-extern int  myabs(int dat);
+extern int myabs(int dat);
 
 #endif /* CODE_MYMATH_H_ */

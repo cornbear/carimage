@@ -153,7 +153,7 @@ typedef struct line_error_info_
 
 void CenterlineGet(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border);
 void draw_centerline(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border);
-INT_POINT_INFO GetOptimumColumn(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_stBorder, TRACK_TYPE_INFO *p_TrackType);
+INT_POINT_INFO getOptimumColumn(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_stBorder, TRACK_TYPE_INFO *p_TrackType);
 void Perspective_Change(TRACK_BORDER_INFO *p_Border);
 void examine(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border);
 void state_judgement(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TYPE_INFO *p_TrackType);
@@ -169,7 +169,7 @@ float Roadwidth_Cal(int16 line);
 void Equidistant_Sample(TRACK_BORDER_INFO *p_Border, float dist);
 void Judge_S(TRACK_BORDER_INFO *p_Border);
 
-void GetBorder(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border);
+void getBorder(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border);
 void GetCenter(TRACK_BORDER_INFO *p_Border);                                                        //计算中线
 void GetTrackType(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TYPE_INFO *p_TrackType); //赛道类型转化
 void Line_GetMonotonicity(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TYPE_INFO *p_TrackType);

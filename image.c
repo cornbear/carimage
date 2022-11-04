@@ -23,8 +23,8 @@ int16 Gap;
 uint8 beep_flag;
 float res;
 float Variance; //方差
-float parameterB,parameterA;
-float last_err;     //中线上次误差
+float parameterB, parameterA;
+float last_err; //中线上次误差
 
 uint8 RRoundabout_TimeToTurn;
 uint8 LRoundabout_TimeToTurn;
@@ -33,7 +33,7 @@ uint8 LRoundabout_TimeToTurn;
 uint8 straight_lines = 24;
 uint8 last_straight_lines;
 uint8 last_last_straight_lines;
-uint8 Single_missing=0;
+uint8 Single_missing = 0;
 
 float Angle_offset; //环岛计算角度
 
@@ -65,18 +65,15 @@ float RPflag_TimeToTurn;
 uint8 RRoundabout_TimeToTurn;
 uint8 LRoundabout_TimeToTurn;
 
-
 uint8 Garage_Left_Angle;
 uint8 Garage_Right_Angle;
 float Garage_Left_Times;
 float Garage_Right_Times;
 
-
 uint8 Gear;
 
 float err_duty;
 int16 Pturn = 0;
-
 
 Err_S err_speed;
 PID_S pid_speed;
@@ -84,8 +81,7 @@ PID_S pid_speed;
 Err_D err_angel;
 PID_D pid_angel;
 
-
-INT_POINT_INFO GetOptimumColumn(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_stBorder, TRACK_TYPE_INFO *p_TrackType)
+INT_POINT_INFO getOptimumColumn(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_stBorder, TRACK_TYPE_INFO *p_TrackType)
 {
     INT_POINT_INFO t_stReturnPoint = {0, 0};
     int16 t_i16LoopY; /*用来循环行*/
@@ -220,7 +216,7 @@ INT_POINT_INFO GetOptimumColumn(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_stBor
     return t_stReturnPoint;                                                                                       //返回实际计算出的最优点
 }
 
-void GetBorder(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border)
+void getBorder(uint8 (*InImg)[IMGW], TRACK_BORDER_INFO *p_Border)
 {
     int16 i;
     const uint8 t_u8OptPntSetoffX = 2;
@@ -1970,7 +1966,7 @@ void state_judgement(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TY
                 //                    start_motor=0;
             }
             pid_angel.ActualAngel = Left_Max_angle;
-            //pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
+            // pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
             break;
         case 2:
             if (Fabs(Angle_offset) > Carbarn_Right_Angle)
@@ -1979,7 +1975,7 @@ void state_judgement(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TY
                 p_TrackType->m_u8CarBarnState = 0;
             }
             pid_angel.ActualAngel = Right_Max_angle + 30;
-            //pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
+            // pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
             break;
         }
     }
@@ -3875,7 +3871,7 @@ void state_judgement(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TY
         case 2:
             //舵机向左打死 某特定行满足全黑 电机停转
             pid_angel.ActualAngel = Left_Max_angle;
-            //pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
+            // pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
             if (Fabs(Angle_offset) > Garage_Left_Angle)
                 pid_speed.SetSpeed = 0;
             break;
@@ -3897,7 +3893,7 @@ void state_judgement(uint8 (*image)[IMGW], TRACK_BORDER_INFO *p_Border, TRACK_TY
         case 4:
             //舵机向右打死 某特定行满足全黑 电机停转 状态位清零
             pid_angel.ActualAngel = Right_Max_angle;
-            //pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
+            // pwm_duty(ATOM1_CH1_P33_9, (uint32)pid_angel.ActualAngel);
             if (Fabs(Angle_offset) > Garage_Right_Angle)
                 pid_speed.SetSpeed = 0;
             break;

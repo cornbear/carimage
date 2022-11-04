@@ -10,26 +10,15 @@
 TRACK_BORDER_INFO g_Border;
 TRACK_TYPE_INFO g_TrackType; /*赛道类型*/
 
-uint8 mt9v03x_image[MT9V03X_H][MT9V03X_W];
-uint8 image_new[MT9V03X_H][MT9V03X_W];
-
 int main()
 {
-    for (int i = 0; i < MT9V03X_H * MT9V03X_W; i++)
+    uint8 mt9v03x_image[IMGH][IMGW];
+    uint8 image_new[IMGH][IMGW];
+
+    for (int i = 0; i < IMGH * IMGW; i++)
     {
-        mt9v03x_image[i / MT9V03X_W][i % MT9V03X_W] = mockImage[i];
+        mt9v03x_image[i / IMGW][i % IMGW] = mockImage[i];
     }
-
-    // for (int i = 0; i < MT9V03X_H; i++)
-    // {
-    //     for (int j = 0; j < MT9V03X_W; j++)
-    //     {
-    //         printf("%x ", mt9v03x_image[i][j]);
-    //     }
-    //     printf("\n"); //换行
-    // }
-
-    // Angle_offset = 0;
 
     g_TrackType.m_u8CarBarnState = 0;
     g_TrackType.m_u8ThreeRoadsDir = 1;
@@ -40,12 +29,17 @@ int main()
 
     getBinaryImage(mt9v03x_image, image_new, g_Border.Threshold); //二值化图像
 
-    saveBitmap("gray.bmp", (uint8*)image_new, IMGW, IMGH, 1);
+    saveBitmap("gray.bmp", (uint8 *)image_new, IMGW, IMGH, 1);
 
-    // GetOptimumColumn(image_new, &g_Border, &g_TrackType);
-    // GetBorder(image_new, &g_Border); //获取边线
-    // Perspective_Change(&g_Border);
-    // straightaway_curve(&g_Border, 0);
+    INT_POINT_INFO optimumPoint = getOptimumColumn(image_new, &g_Border, &g_TrackType); //获取最优点
+    printf("Optimum Point: (%d,%d)\n", optimumPoint.m_i16x, optimumPoint.m_i16y);
+
+    getBorder(image_new, &g_Border); //获取边线
+
+    Perspective_Change(&g_Border); //相机畸变矫正
+
+    straightaway_curve(&g_Border, 0);
+
     // state_judgement(image_new, &g_Border, &g_TrackType); ///??????
     // Out_Protect(image_new);
     // if (g_TrackType.m_u8CrossFlag != 4)
