@@ -69,8 +69,8 @@ typedef struct trackborder_info_
     //        int16 m_i16OutWidthStart;   //超宽开始行
     //        int16 m_i16OutWidthEnd;     //超宽结束行
 
-    float Threshold;
-    uint8 LastThreshold;
+    // float Threshold;
+    // uint8 LastThreshold;
 
     INT_POINT_INFO m_LMaxPoint; /*左边最大点,在正常情况下,最大点不应该出现在边线的中间,只会出现在边线结束,出现在中间,那么这个最大点应该就*/
     INT_POINT_INFO m_RMinPoint;
