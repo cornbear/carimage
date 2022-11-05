@@ -8,12 +8,12 @@ void bitmapBit8to24(uint8 imageBit8[], uint8 imageBit24[], int width, int height
     }
 }
 
-void drawPoint(uint8 imageBit24[], int16 x, int16 y, COLOR color)
+void drawPoint(uint8 imageBit24[], int width, int height, int16 x, int16 y, COLOR color)
 {
-    int idx = 3 * x + y;
-    imageBit24[idx] = color.r;
+    int idx = 3 * (width * y + x);
+    imageBit24[idx] = color.b;
     imageBit24[idx + 1] = color.g;
-    imageBit24[idx + 2] = color.b;
+    imageBit24[idx + 2] = color.r;
 }
 
 void saveBit8Bitmap(char *fileName, uint8 image[], int width, int height)

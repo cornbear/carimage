@@ -26,23 +26,32 @@ int main()
     g_TrackType.m_u8RunTurns = 0;
 
     uint8 threshold = getThreshold(mt9v03x_image); //获取图像阈值
-    printf("Threshold: %d\n", threshold);
+    // printf("Threshold: %d\n", threshold);
 
     getBinaryImage(mt9v03x_image, imageBit8, threshold); //二值化图像
+    // saveBit8Bitmap("gray.bmp", (uint8 *)imageBit8, IMGW, IMGH);
 
-    saveBit8Bitmap("gray.bmp", (uint8 *)imageBit8, IMGW, IMGH);
-
-    INT_POINT_INFO optimumPoint = getOptimumColumn(imageBit8, &g_Border, &g_TrackType); //获取最优点
-    printf("Optimum Point: (%d,%d)\n", optimumPoint.m_i16x, optimumPoint.m_i16y);
+    getOptimumColumn(imageBit8, &g_Border, &g_TrackType); //获取最优点
+    // printf("Optimum Point: (%d,%d)\n", g_Border.m_OptimalPoint.m_i16x, g_Border.m_OptimalPoint.m_i16y);
 
     bitmapBit8to24((uint8 *)imageBit8, (uint8 *)imageBit24, IMGW, IMGH);
 
-    drawPoint((uint8 *)imageBit24, g_Border.m_OptimalPoint.m_i16x, g_Border.m_OptimalPoint.m_i16y, RED);
-    drawPoint((uint8 *)imageBit24, g_Border.m_CenterLinePoint.m_i16x, g_Border.m_CenterLinePoint.m_i16y, GREEN);
+    drawPoint((uint8 *)imageBit24, IMGW, IMGH, g_Border.m_OptimalPoint.m_i16x, g_Border.m_OptimalPoint.m_i16y, RED);
+    drawPoint((uint8 *)imageBit24, IMGW, IMGH, g_Border.m_CenterLinePoint.m_i16x, g_Border.m_CenterLinePoint.m_i16y, GREEN);
 
-    saveBit24Bitmap("color.bmp", (uint8 *)imageBit24, IMGW, IMGH);
+    // saveBit24Bitmap("point.bmp", (uint8 *)imageBit24, IMGW, IMGH);
 
     getBorder(imageBit8, &g_Border); //获取边线
+
+    for (int i = 0; i < IMGH; i++)
+    {
+        INT_POINT_INFO lp = g_Border.m_LPnt[i];
+        INT_POINT_INFO rp = g_Border.m_RPnt[i];
+        drawPoint((uint8 *)imageBit24, IMGW, IMGH, lp.m_i16x, lp.m_i16y, BLUE);
+        drawPoint((uint8 *)imageBit24, IMGW, IMGH, rp.m_i16x, rp.m_i16y, BLUE);
+    }
+
+    saveBit24Bitmap("border.bmp", (uint8 *)imageBit24, IMGW, IMGH);
 
     Perspective_Change(&g_Border); //相机畸变矫正
 
